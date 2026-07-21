@@ -41,6 +41,10 @@ The second approach uses a vision-language model to directly infer the chronolog
 |---|---|---|---:|---:|---|
 | 2026-07-17 | CLIP-ViT-B-32 | 24-class ordering classifier | 0.05125 | 3.13687 | Initial baseline result |
 | 2026-07-20 | Qwen3-VL-4B-Instruct | Enhanced prompt inference | 0.11 | - | Better than baseline, but identity-order prediction ratio was high |
+| 2026-07-21 | Qwen3-VL-4B | Prompt + TTA | 0.16 | Reduced identity-order bias |
+| 2026-07-21 | Qwen3-VL-4B QLoRA | Small QLoRA fine-tuning | 0.20 | High identity ratio |
+| 2026-07-22 | SigLIP-Base | 24-class classifier | ~0.07-0.10 | Low accuracy with frozen features |
+| 2026-07-22 | CLIP-B/32 LoRA | Permutation scoring | 0.2725 | Best local validation so far, but overfitting observed |
 
 
 ## Experiment Notes
@@ -51,23 +55,6 @@ After that, I tested `Qwen/Qwen3-VL-4B-Instruct` with prompt-based inference. Th
 
 The 24-candidate prompt approach performed worse than the enhanced prompt, so it is not used as the current main approach.
 
-Next steps:
-
-- Image quality preprocessing
-  - Improve image clarity before model input
-  - Test resizing, sharpening, contrast adjustment, and noise reduction
-
-- Smarter validation split
-  - Create a validation set that better matches the Kaggle test distribution
-  - Check whether sentence types, answer patterns, and scene categories are balanced
-
-- QLoRA fine-tuning
-  - Move from prompt-only inference to supervised fine-tuning
-  - Use QLoRA to train the model efficiently under limited GPU memory
-
-- Input image order TTA
-  - Run inference with multiple permutations of the four input images
-  - Aggregate the predictions to reduce bias toward the original input order
 
 ## Repository Structure
 
